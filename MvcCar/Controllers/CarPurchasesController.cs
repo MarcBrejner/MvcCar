@@ -23,8 +23,13 @@ namespace MvcCar.Controllers
         // GET: CarPurchases
         public async Task<IActionResult> Index()
         {
-
-            return View(await _context.CarPurchase.ToListAsync());
+            var ps = new List<CarPurchase>();
+            var purchases = _context.CarPurchase
+                .Include(x => x.Car)
+                .Include(x => x.Customer)
+                .Include(x => x.SalesPerson);
+            
+            return View(await purchases.ToListAsync());
         }
 
         // GET: CarPurchases/Details/5
